@@ -45,7 +45,14 @@ public class UserController {
 	}
 	
 	@PutMapping("/user/{id}")
-	public User updateUser(@PathVariable(value="id") int id, @Valid @RequestBody User user) {
-		return userService.saveUser(user);
+	public User updateUser(@PathVariable(value="id") int id, @Valid @RequestBody User user) throws EntityNotFoundException {
+		Optional<User> existingUser = userService.findUser(id);
+		
+		if(existingUser.isPresent()) {
+			User userToUpdate = userService.getUserToUpdate(existingUser.get(), user);
+			return userService.saveUser(userToUpdate);
+		}else {
+			throw new EntityNotFoundException();
+		}
 	}
 }

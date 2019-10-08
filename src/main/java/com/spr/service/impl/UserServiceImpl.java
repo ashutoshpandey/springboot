@@ -30,4 +30,15 @@ public class UserServiceImpl implements UserService {
 	public User saveUser(User user) {
 		return userRepository.save(user);
 	}
+
+	@Override
+	public User getUserToUpdate(User existingUser, User userToUpdate) {
+		if(userToUpdate.getName() != null)
+			existingUser.setName(userToUpdate.getName());
+			
+		if(userToUpdate.getEmail() != null)
+			existingUser.setEmail(userToUpdate.getEmail());
+
+		return existingUser;
+	}
 }

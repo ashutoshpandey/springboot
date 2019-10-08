@@ -10,4 +10,5 @@ public interface UserService {
 	Optional<User> findUser(int id);
 	
 	List<User> getUsers();
+	User getUserToUpdate(User existingUser, User userToUpdate);
 }

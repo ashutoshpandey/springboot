@@ -10,12 +10,14 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotEmpty;
+
+import org.hibernate.annotations.DynamicUpdate;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
+@DynamicUpdate
 @Table(name = "users")
 @JsonIgnoreProperties(value = {"hibernateLazyInitializer"})
 public class User {
@@ -23,11 +25,9 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	@NotEmpty
 	//@JsonIgnore
 	private String name;
 
-	@NotEmpty
 	@JsonProperty(value = "Email")
 	private String email;
 
