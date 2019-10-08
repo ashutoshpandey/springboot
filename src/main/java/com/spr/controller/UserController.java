@@ -28,7 +28,8 @@ public class UserController {
 	
 	@GetMapping("/user")
 	public ResponseEntity<List<User>> getUsers(){
-		return new ResponseEntity<List<User>>(userService.getUsers(), HttpStatus.OK);
+		//return new ResponseEntity<List<User>>(userService.getUsers(), HttpStatus.OK);
+		return ResponseEntity.ok().body(userService.getUsers());
 	}
 	
 	@GetMapping("/user/{id}")
@@ -38,7 +39,8 @@ public class UserController {
 		if(!user.isPresent())
 			throw new EntityNotFoundException();
 		
-		return new ResponseEntity<User>(user.get(), HttpStatus.OK);
+		/* Return with header example */
+		return ResponseEntity.ok().header("some-header", "some-value").body(user.get());
 	}
 	
 	@PostMapping("/user")
@@ -57,6 +59,16 @@ public class UserController {
 			throw new EntityNotFoundException();
 		}
 	}
+
+	@GetMapping("/user/name")
+	public ResponseEntity<List<User>> getUsersByName(@RequestBody User user){		
+		return ResponseEntity.ok().body(userService.getUsersByName(user));
+	}	
+
+	@GetMapping("/user/name-gender")
+	public ResponseEntity<List<User>> getUsersByNameGender(@RequestBody User user){		
+		return ResponseEntity.ok().body(userService.getUsersByNameGender(user));
+	}	
 }
 
 /*

@@ -10,5 +10,7 @@ public interface UserService {
 	Optional<User> findUser(int id);
 	
 	List<User> getUsers();
+	List<User> getUsersByName(User user);
+	List<User> getUsersByNameGender(User user);
 	User getUserToUpdate(User existingUser, User userToUpdate);
 }
