@@ -12,27 +12,25 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotEmpty;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 @Table(name = "users")
-@JsonIgnoreProperties(value = {"createDate", "Email"})
+@JsonIgnoreProperties(value = {"hibernateLazyInitializer"})
 public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
 	@NotEmpty
-	@JsonIgnore
+	//@JsonIgnore
 	private String name;
 
 	@NotEmpty
 	@JsonProperty(value = "Email")
 	private String email;
 
-	//@JsonIgnore
 	@Column(name = "create_date")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date createDate;

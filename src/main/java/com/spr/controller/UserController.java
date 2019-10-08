@@ -1,6 +1,7 @@
 package com.spr.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.spr.entity.User;
+import com.spr.exception.EntityNotFoundException;
 import com.spr.service.UserService;
 
 @RestController
@@ -28,8 +30,13 @@ public class UserController {
 	}
 	
 	@GetMapping("/user/{id}")
-	public User getUser(@PathVariable(value="id") int id) {
-		return userService.findUser(id);
+	public User getUser(@PathVariable(value="id") int id) throws EntityNotFoundException {
+		Optional<User> user = userService.findUser(id);
+		
+		if(!user.isPresent())
+			throw new EntityNotFoundException();
+		
+		return user.get();
 	}
 	
 	@PostMapping("/user")

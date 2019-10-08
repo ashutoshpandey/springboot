@@ -1,6 +1,7 @@
 package com.spr.service.impl;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +17,8 @@ public class UserServiceImpl implements UserService {
 	private UserRepository userRepository;
 	
 	@Override
-	public User findUser(int id) {
-		return userRepository.getOne(id);
+	public Optional<User> findUser(int id) {
+		return userRepository.findById(id);
 	}
 
 	@Override
