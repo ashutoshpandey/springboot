@@ -6,6 +6,8 @@ import java.util.Optional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,34 +27,39 @@ public class UserController {
 	private UserService userService;
 	
 	@GetMapping("/user")
-	public List<User> getUsers(){
-		return userService.getUsers();
+	public ResponseEntity<List<User>> getUsers(){
+		return new ResponseEntity<List<User>>(userService.getUsers(), HttpStatus.OK);
 	}
 	
 	@GetMapping("/user/{id}")
-	public User getUser(@PathVariable(value="id") int id) throws EntityNotFoundException {
+	public ResponseEntity<User> getUser(@PathVariable(value="id") int id) throws EntityNotFoundException {
 		Optional<User> user = userService.findUser(id);
 		
 		if(!user.isPresent())
 			throw new EntityNotFoundException();
 		
-		return user.get();
+		return new ResponseEntity<User>(user.get(), HttpStatus.OK);
 	}
 	
 	@PostMapping("/user")
-	public User createUser(@Valid @RequestBody User user) {
-		return userService.saveUser(user);
+	public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
+		return new ResponseEntity<User>(userService.saveUser(user), HttpStatus.OK);
 	}
 	
 	@PutMapping("/user/{id}")
-	public User updateUser(@PathVariable(value="id") int id, @Valid @RequestBody User user) throws EntityNotFoundException {
+	public ResponseEntity<User> updateUser(@PathVariable(value="id") int id, @Valid @RequestBody User user) throws EntityNotFoundException {
 		Optional<User> existingUser = userService.findUser(id);
 		
 		if(existingUser.isPresent()) {
 			User userToUpdate = userService.getUserToUpdate(existingUser.get(), user);
-			return userService.saveUser(userToUpdate);
+			return new ResponseEntity<User>(userService.saveUser(userToUpdate), HttpStatus.OK);
 		}else {
 			throw new EntityNotFoundException();
 		}
 	}
 }
+
+/*
+ ResponseEntity represents the whole HTTP response: status code, headers, and body. 
+ Because of it, we can use it to fully configure the HTTP response.
+*/
