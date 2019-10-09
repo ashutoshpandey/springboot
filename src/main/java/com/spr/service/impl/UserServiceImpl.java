@@ -46,12 +46,19 @@ public class UserServiceImpl implements UserService {
 
 		return existingUser;
 	}
-
+/*
 	@Override
 	public List<User> getUsersByName(User user) {
 		UserSpecification spec = new UserSpecification(new SearchCriteria("name", ":", user.getName()));
 
 		List<User> users = userRepository.findAll(spec);
+		return users;
+	}
+*/
+	
+	@Override
+	public List<User> getUsersByName(User user) {
+		List<User> users = userRepository.findByName(user.getName());
 		return users;
 	}
 
