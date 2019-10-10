@@ -1,54 +1,29 @@
 package com.spr.entity;
 
-import java.util.Date;
-
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-
-import org.hibernate.annotations.DynamicUpdate;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
-@DynamicUpdate
 @Table(name = "users")
-@JsonIgnoreProperties(value = {"hibernateLazyInitializer"})
 public class User {
 	@Id
+	private String username;
+	
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
-
-	private String name;
+	private int id;
 
 	private String gender;
 	
-	private String username;
-	
-	@JsonIgnore
 	private String password;
 
-	@JsonProperty(value = "Email")
+	private String name;
+	
 	private String email;
-
-	@Column(name = "create_date")
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date createDate;
-
-	public Date getCreateDate() {
-		return createDate;
-	}
-
-	public void setCreateDate(Date createDate) {
-		this.createDate = createDate;
-	}
+	
+	private boolean isActive;
 
 	public User() {}
 	
@@ -56,13 +31,47 @@ public class User {
 		this.name = name;
 		this.email = email;
 		this.gender = gender;
+		
+		this.isActive = true;
 	}
 
-	public Integer getId() {
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public boolean isActive() {
+		return isActive;
+	}
+
+	public void setActive(boolean isActive) {
+		this.isActive = isActive;
+	}
+
+	public String getGender() {
+		return gender;
+	}
+
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+	
+	public int getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
@@ -80,29 +89,5 @@ public class User {
 
 	public void setEmail(String email) {
 		this.email = email;
-	}
-
-	public String getGender() {
-		return gender;
-	}
-
-	public void setGender(String gender) {
-		this.gender = gender;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
 	}
 }

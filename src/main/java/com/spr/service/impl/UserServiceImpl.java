@@ -5,12 +5,13 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.spr.entity.User;
-import com.spr.search.SearchCriteria;
 import com.spr.repository.UserRepository;
+import com.spr.search.SearchCriteria;
 import com.spr.search.UserSpecification;
 import com.spr.service.UserService;
 
@@ -20,7 +21,13 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private UserRepository userRepository;
+	
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
 
+	public UserServiceImpl() {
+		this.bCryptPasswordEncoder = new BCryptPasswordEncoder();
+	}
+	
 	@Override
 	public Optional<User> findUser(int id) {
 		return userRepository.findById(id);
@@ -33,6 +40,8 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public User saveUser(User user) {
+		user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+		
 		return userRepository.save(user);
 	}
 
