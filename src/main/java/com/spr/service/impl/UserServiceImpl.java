@@ -9,11 +9,14 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.spr.entity.Authority;
 import com.spr.entity.User;
+import com.spr.repository.AuthorityRepository;
 import com.spr.repository.UserRepository;
 import com.spr.search.SearchCriteria;
 import com.spr.search.UserSpecification;
 import com.spr.service.UserService;
+import com.spr.util.Constants;
 
 @Service
 @Transactional
@@ -21,6 +24,9 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private UserRepository userRepository;
+	
+	@Autowired
+	private AuthorityRepository authorityRepository;
 	
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 
@@ -42,7 +48,14 @@ public class UserServiceImpl implements UserService {
 	public User saveUser(User user) {
 		user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 		
-		return userRepository.save(user);
+		User createdUser = userRepository.save(user);
+		
+		Authority authority = new Authority();
+		authority.setUsername(createdUser.getUsername());
+		authority.setAuthority(Constants.ROLE_USER);
+		authorityRepository.save(authority);
+		
+		return createdUser;
 	}
 
 	@Override

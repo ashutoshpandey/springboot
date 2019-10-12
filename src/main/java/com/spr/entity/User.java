@@ -1,5 +1,6 @@
 package com.spr.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -8,22 +9,20 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "users")
-public class User {
+public class User {	
 	@Id
-	private String username;
-	
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 
-	private String gender;
-	
-	private String password;
+	@Column(unique = true)
+	private String username;
 
 	private String name;
-	
 	private String email;
+	private String gender;	
+	private String password;	
 	
-	private boolean isActive;
+	private boolean enabled;
 
 	public User() {}
 	
@@ -32,7 +31,7 @@ public class User {
 		this.email = email;
 		this.gender = gender;
 		
-		this.isActive = true;
+		this.enabled = true;
 	}
 
 	public String getUsername() {
@@ -51,12 +50,12 @@ public class User {
 		this.password = password;
 	}
 
-	public boolean isActive() {
-		return isActive;
+	public boolean enabled() {
+		return enabled;
 	}
 
-	public void setActive(boolean isActive) {
-		this.isActive = isActive;
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
 	}
 
 	public String getGender() {

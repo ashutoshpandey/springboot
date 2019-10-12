@@ -1,5 +1,2 @@
-CREATE TABLE authorities (
-  username VARCHAR(256) NOT NULL,
-  authority VARCHAR(256) NOT NULL,
-  FOREIGN KEY (username) REFERENCES users(username)
-);
+insert into users(username, name, gender, password, email, is_active) values('ashutosh', 'Ashutosh Pandey', 'male', '$2y$10$llcw8Cbuww90KW1dYB6Rn.98iM0JyTiC1VBT1WveVKz99VqbhFLpG', 'a@b.com', true);
+insert into authorities(username, authority) values('ashutosh', 'ADMIN');
