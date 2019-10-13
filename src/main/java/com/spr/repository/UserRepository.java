@@ -10,4 +10,5 @@ import com.spr.entity.User;
 public interface UserRepository extends JpaRepository<User, Integer>, JpaSpecificationExecutor<User>{
 
 	List<User> findByName(String name);
+	User findByUsername(String username);
 }

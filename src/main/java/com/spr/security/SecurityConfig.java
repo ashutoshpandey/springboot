@@ -3,8 +3,6 @@ package com.spr.security;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -23,15 +21,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private DataSource dataSource;
 	
-	protected void configure(HttpSecurity http) throws Exception {
-		http.httpBasic()
+	//@Autowired
+	//private JwtRequestFilter jwtRequestFilter;
+	
+	protected void configure(HttpSecurity httpSecurity) throws Exception {
+		httpSecurity.httpBasic()
 			.and()
 			.authorizeRequests()
-			.antMatchers("/api/**").hasRole(Constants.ROLE_USER)
-			.antMatchers("/admin/**").hasRole(Constants.ROLE_ADMIN)
+			.antMatchers("/api/**").hasAuthority(Constants.ROLE_USER)
+			.antMatchers("/admin/**").hasAuthority(Constants.ROLE_ADMIN)
 			.and()
 			.csrf().disable()
 			.headers().frameOptions().disable();
+		
+		/* To validate JWT */
+		//httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 	}
 
 	@Override
@@ -42,8 +46,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	protected void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
 	   auth.jdbcAuthentication()
+	   	  .dataSource(dataSource)
 	   	  .passwordEncoder(passwordEncoder())
-	      .dataSource(dataSource)
 	      .authoritiesByUsernameQuery("select username,authority from authorities where username = ?")
 	      .usersByUsernameQuery("select username,password,enabled from users where username = ?");
 	}
@@ -73,6 +77,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.roles("ADMIN");
 	}
 	*/
+	
+	/************************ Beans ***************************/
 	
 	/*
 	 * Spring security will automatically use this for decoding password while authentication
